@@ -38,7 +38,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	}
 	admin := router.Group("/admin")
 	{
-		api := admin.Group("/api")
+		api := admin.Group("/api", h.userIdentity)
 		{
 			book := api.Group("/book")
 			{
