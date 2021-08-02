@@ -12,6 +12,14 @@ import (
 	"os"
 )
 
+// @title App API
+// @version 1.1
+// @description API
+// @host localhost:8000
+// @BasePath /
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 func main() {
 	if err := initConfig(); err != nil {
 		log.Fatalf("error init config: %s", err.Error())

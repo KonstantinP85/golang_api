@@ -11,7 +11,8 @@ type Authorization interface {
 }
 
 type Book interface {
-
+	GetBook(id int) (api_go.Book, error)
+	GetBooks() ([]api_go.Book, error)
 }
 
 type User interface {
@@ -32,5 +33,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuth(db),
 		User: NewUserDB(db),
+		Book: NewBookDB(db),
 	}
 }

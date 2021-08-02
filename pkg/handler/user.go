@@ -15,6 +15,18 @@ type GetUsersResponse struct {
 	Result []api_go.User
 }
 
+// @Summary get users
+// @Security ApiKeyAuth
+// @Tags user
+// @Description get all user
+// @ID get-all-user
+// @Accept json
+// @Produce json
+// @Success 200 {object} GetUsersResponse
+// @Failure 400/404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /admin/api/user [get]
 func (h *Handler) getUsers(c *gin.Context)  {
 	users, err := h.services.User.GetUsers()
 	if err != nil {
@@ -27,6 +39,19 @@ func (h *Handler) getUsers(c *gin.Context)  {
 	})
 }
 
+// @Summary get user by id
+// @Security ApiKeyAuth
+// @Tags user
+// @Description get user
+// @ID get-user
+// @Accept json
+// @Produce json
+// @Param id path int true "User ID"
+// @Success 200 {object} api_go.User
+// @Failure 400/404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /admin/api/user/{id} [get]
 func (h *Handler) getUser(c *gin.Context)  {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
