@@ -11,8 +11,9 @@ type Authorization interface {
 }
 
 type Book interface {
-	GetBook(id int) (api_go.Book, error)
-	GetBooks() ([]api_go.Book, error)
+	GetBook(id int) (api_go.BookResponse, error)
+	GetBooks(authorId int) ([]api_go.BookResponse, error)
+	CreateBook(book api_go.BookInput) (int, error)
 }
 
 type User interface {
@@ -23,10 +24,17 @@ type User interface {
 	DeleteUser(id int) error
 }
 
+type Author interface {
+	CreateAuthor(author api_go.AuthorInput) (int, error)
+	GetAuthors() ([]api_go.Author, error)
+	GetAuthor(id int) (api_go.AuthorResponse, error)
+}
+
 type Repository struct {
 	Authorization
 	Book
 	User
+	Author
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
@@ -34,5 +42,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 		Authorization: NewAuth(db),
 		User: NewUserDB(db),
 		Book: NewBookDB(db),
+		Author: NewAuthorDB(db),
 	}
 }

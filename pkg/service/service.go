@@ -22,14 +22,22 @@ type User interface {
 }
 
 type Book interface {
-	GetBook(id int) (api_go.Book, error)
-	GetBooks() ([]api_go.Book, error)
+	GetBook(id int) (api_go.BookResponse, error)
+	GetBooks(authorId int) ([]api_go.BookResponse, error)
+	CreateBook(book api_go.BookInput) (int, error)
+}
+
+type Author interface {
+	CreateAuthor(author api_go.AuthorInput) (int, error)
+	GetAuthors() ([]api_go.Author, error)
+	GetAuthor(id int) (api_go.AuthorResponse, error)
 }
 
 type Service struct {
 	Authorization
 	User
 	Book
+	Author
 }
 
 func NewService(repo *repository.Repository) *Service {
@@ -37,5 +45,6 @@ func NewService(repo *repository.Repository) *Service {
 		Authorization: NewAuthService(repo.Authorization),
 		User: NewUserService(repo.User),
 		Book: NewBookService(repo.Book),
+		Author: NewAuthorService(repo.Author),
 	}
 }

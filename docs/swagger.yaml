@@ -1,5 +1,65 @@
 basePath: /
 definitions:
+  api_go.Author:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  api_go.AuthorInput:
+    properties:
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  api_go.AuthorResponse:
+    properties:
+      book:
+        items:
+          $ref: '#/definitions/api_go.Book'
+        type: array
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  api_go.Book:
+    properties:
+      author_id:
+        type: integer
+      id:
+        type: integer
+      title:
+        type: string
+      years:
+        type: integer
+    type: object
+  api_go.BookInput:
+    properties:
+      author_id:
+        type: integer
+      title:
+        type: string
+      years:
+        type: integer
+    required:
+    - author_id
+    - title
+    - years
+    type: object
+  api_go.BookResponse:
+    properties:
+      author:
+        $ref: '#/definitions/api_go.Author'
+      id:
+        type: integer
+      title:
+        type: string
+      years:
+        type: integer
+    type: object
   api_go.User:
     properties:
       _:
@@ -13,6 +73,13 @@ definitions:
     required:
     - email
     - password
+    type: object
+  handler.GetBooksResponse:
+    properties:
+      result:
+        items:
+          $ref: '#/definitions/api_go.BookResponse'
+        type: array
     type: object
   handler.GetUsersResponse:
     properties:
@@ -43,6 +110,215 @@ info:
   title: App API
   version: "1.1"
 paths:
+  /admin/api/author:
+    get:
+      consumes:
+      - application/json
+      description: get authors
+      operationId: get-authors
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: get authors
+      tags:
+      - author
+    post:
+      consumes:
+      - application/json
+      description: create author
+      operationId: create-author
+      parameters:
+      - description: author info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/api_go.AuthorInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: create author
+      tags:
+      - author
+  /admin/api/author/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get author
+      operationId: get-author
+      parameters:
+      - description: Author ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api_go.AuthorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: get author by id
+      tags:
+      - author
+  /admin/api/book:
+    get:
+      consumes:
+      - application/json
+      description: get books
+      operationId: get-books
+      parameters:
+      - description: Author id
+        in: query
+        name: authorId
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.GetBooksResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: get books
+      tags:
+      - book
+    post:
+      consumes:
+      - application/json
+      description: create book
+      operationId: create-book
+      parameters:
+      - description: book info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/api_go.BookInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: create book
+      tags:
+      - book
+  /admin/api/book/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get book
+      operationId: get-book
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api_go.BookResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: get book by id
+      tags:
+      - book
   /admin/api/user:
     get:
       consumes:

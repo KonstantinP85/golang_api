@@ -47,6 +47,9 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		{
 			book := api.Group("/book")
 			{
+				book.GET("/", h.getBookList)
+				//book.GET("/:authorId", h.getBooksByAuthorId)
+				book.GET("/:id", h.getBook)
 				book.POST("/", h.createBook)
 				book.PUT("/:id", h.updateBook)
 				book.DELETE("/:id", h.deleteBook)
@@ -54,6 +57,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 			author := api.Group("/author")
 			{
+				author.GET("/", h.getAuthorList)
+				author.GET("/:id", h.getAuthor)
 				author.POST("/", h.createAuthor)
 				author.PUT("/:id", h.updateAuthor)
 				author.DELETE("/:id", h.deleteAuthor)
